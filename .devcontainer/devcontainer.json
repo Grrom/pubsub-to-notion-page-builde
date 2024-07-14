@@ -1,0 +1,7 @@
+{
+  "name": "Pubsub to notion page builder",
+  "build": {
+    "dockerfile": "../docker/Dockerfile",
+    "context": ".."
+  }
+}
