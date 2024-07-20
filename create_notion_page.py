@@ -48,7 +48,7 @@ def create_notion_page(event, _):
             continue
 
         if property_row["type"] == "number":
-            row.set_property(property["key"], float(property["value"]))
+            row.set_property(property["key"], float(property["value"].replace(",", "")))
             continue
 
         row.set_property(property["key"], property["value"])
