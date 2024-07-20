@@ -1,3 +1,4 @@
+import datetime
 import json
 import os
 from dotenv import load_dotenv
@@ -36,5 +37,18 @@ def create_notion_page(event, _):
     properties = request_body.get("properties") or []
 
     row = cv.collection.add_row()
-    for prop in properties:
-        row.set_property(prop["key"], prop["value"])
+
+    for property in properties:
+        property_row = next((prop for prop in row.schema if prop["name"] == property["key"]), None)
+        if property_row is None:
+            raise ValueError(f"Property {property['key']} not found")
+        
+        if property_row["type"] == "date":
+            row.set_property(property["key"], datetime.datetime.strptime(property["value"], "%Y-%m-%d"))
+            continue
+
+        if property_row["type"] == "number":
+            row.set_property(property["key"], float(property["value"]))
+            continue
+
+        row.set_property(property["key"], property["value"])
