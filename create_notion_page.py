@@ -44,7 +44,7 @@ def create_notion_page(event, _):
             raise ValueError(f"Property {property['key']} not found")
         
         if property_row["type"] == "date":
-            row.set_property(property["key"], datetime.datetime.strptime(property["value"], "%Y-%m-%d"))
+            row.set_property(property["key"], datetime.datetime.strptime(property["value"], "%m-%d-%Y"))
             continue
 
         if property_row["type"] == "number":
