@@ -2,7 +2,6 @@ import datetime
 import json
 import os
 from dotenv import load_dotenv
-import base64
 from notion.client import NotionClient
 
 load_dotenv()
@@ -64,3 +63,5 @@ def create_notion_page(request):
             continue
 
         row.set_property(property["key"], property["value"])
+
+    return "Success"
