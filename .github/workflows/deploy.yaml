@@ -37,9 +37,7 @@ jobs:
           --entry-point create_notion_page \
           --region us-central1 \
           --project=${{ secrets.GCP_PROJECT_ID }} \
-          --no-allow-unauthenticated \
           --no-gen2 \
           --memory 128MB \
-          --trigger-http \
-          --security-level secure-always \
+          --trigger-topic create-notion-page \
           --set-env-vars TOKEN_V2="${{ secrets.TOKEN_V2 }}"
