@@ -32,12 +32,14 @@ jobs:
           printf "%s" '${{ secrets.GCF_DEPLOYER_KEY }}' > key-file.json
           gcloud auth activate-service-account --key-file=key-file.json
           rm key-file.json
-          gcloud functions deploy pubsub-to-notion-page-builder \
+          gcloud functions deploy notion-page-builder \
           --runtime python39 \
           --entry-point create_notion_page \
           --region us-central1 \
           --project=${{ secrets.GCP_PROJECT_ID }} \
+          --no-allow-unauthenticated \
           --no-gen2 \
           --memory 128MB \
-          --trigger-topic create-notion-page \
+          --trigger-http \
+          --security-level secure-always \
           --set-env-vars TOKEN_V2="${{ secrets.TOKEN_V2 }}"

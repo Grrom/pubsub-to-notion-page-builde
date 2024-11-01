@@ -1,7 +1,7 @@
-import base64
-import datetime
 import json
 import os
+
+from requests import Request
 
 from dotenv import load_dotenv
 
@@ -10,7 +10,7 @@ from main import create_notion_page
 
 load_dotenv()
 
-test_message = {
+test_body = {
     "organization": os.getenv("TEST_NOTION_ORGANIZATION"),
     "database-id": os.getenv("TEST_NOTION_DATABASE_ID"),
     "view-id": os.getenv("TEST_NOTION_VIEW_ID"),
@@ -27,8 +27,14 @@ test_message = {
         },
     ],
 }
-# when using this test message as a json, make sure you update True to true, as True is only for python
 
-base64_message = base64.b64encode(json.dumps(test_message).encode("utf-8"))
+request = Request(
+    method="POST",
+    url="https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    headers={
+        "Content-Type": "application/json",
+    },
+    data=json.dumps(test_body),
+)
 
-create_notion_page({"data": base64_message}, None)
+create_notion_page(request)

@@ -10,14 +10,16 @@ load_dotenv()
 client = NotionClient(os.getenv("TOKEN_V2"))
 
 
-def create_notion_page(event, _):
-    """Triggered from a message on a Cloud Pub/Sub topic.
+def create_notion_page(request):
+    """Responds to any HTTP request.
     Args:
-        event (dict): Event payload.
-        context (google.cloud.functions.Context): Metadata for the event.
+        request (flask.Request): HTTP request object.
+    Returns:
+        The response text or any set of values that can be turned into a
+        Response object using
+        `make_response <http://flask.pocoo.org/docs/1.0/api/#flask.Flask.make_response>`.
     """
-    pubsub_message = base64.b64decode(event["data"]).decode("utf-8")
-    request_body = json.loads(pubsub_message)
+    request_body = json.loads(request.data)
 
     organization = request_body.get("organization")
     if organization is None:
