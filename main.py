@@ -9,6 +9,7 @@ load_dotenv()
 
 client = NotionClient(os.getenv("TOKEN_V2"))
 
+
 def create_notion_page(event, _):
     """Triggered from a message on a Cloud Pub/Sub topic.
     Args:
@@ -35,16 +36,25 @@ def create_notion_page(event, _):
     )
 
     properties = request_body.get("properties") or []
+    children = request_body.get("children") or []
 
     row = cv.collection.add_row()
 
+    for child in children:
+        row.children.add_new(child["type"], title=child["content"])
+
     for property in properties:
-        property_row = next((prop for prop in row.schema if prop["name"] == property["key"]), None)
+        property_row = next(
+            (prop for prop in row.schema if prop["name"] == property["key"]), None
+        )
         if property_row is None:
             raise ValueError(f"Property {property['key']} not found")
-        
+
         if property_row["type"] == "date":
-            row.set_property(property["key"], datetime.datetime.strptime(property["value"], "%m-%d-%Y"))
+            row.set_property(
+                property["key"],
+                datetime.datetime.strptime(property["value"], "%m-%d-%Y"),
+            )
             continue
 
         if property_row["type"] == "number":

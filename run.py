@@ -5,7 +5,7 @@ import os
 
 from dotenv import load_dotenv
 
-from create_notion_page import create_notion_page
+from main import create_notion_page
 
 
 load_dotenv()
@@ -16,8 +16,14 @@ test_message = {
     "view-id": os.getenv("TEST_NOTION_VIEW_ID"),
     "properties": [
         {
-            "key": "name",
+            "key": "Name",
             "value": "test doc",
+        },
+    ],
+    "children": [
+        {
+            "type": "text",
+            "content": "This is a test document",
         },
     ],
 }
